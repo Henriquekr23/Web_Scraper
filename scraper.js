@@ -1,8 +1,11 @@
 import puppeteer from "puppeteer";
+import { inserir, init } from "./js/db.js";
 
 async function run() {
+    await init();
+
     const browser = await puppeteer.launch({
-        headless: false //true para rodar sem abrir o navegador
+        headless: true //true para rodar sem abrir o navegador
     });
 
     const page = await browser.newPage();
@@ -19,8 +22,12 @@ async function run() {
         return { titulo, paragrafo };
     });
 
-    console.log("Título: ", data.titulo);
-    console.log("Parágrafo: ", data.paragrafo);
+    try {
+        await inserir(data.titulo, data.paragrafo);
+        console.log("Dados salvos em banco!");
+    } catch(err) {
+        console.log(err);
+    }
 
     await browser.close();
 }
