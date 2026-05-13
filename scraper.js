@@ -1,5 +1,5 @@
 import puppeteer from "puppeteer";
-import { inserir, criar } from "./js/db.js";
+import { inserir, criar, comparar } from "./db.js";
 
 async function run() {
     await criar();
@@ -20,8 +20,7 @@ async function run() {
     const hoje = new Date();
     const ano = hoje.getFullYear();
     const mes = String(hoje.getMonth() + 1).padStart(2, "0");
-    // const dia = String(hoje.getDate()).padStart(2, "0");
-    const dia = "12";
+    const dia = String(hoje.getDate() - 1).padStart(2, "0");
 
     const dataHoje = `${ano}/${mes}/${dia}`;
     console.log(dataHoje);
@@ -35,15 +34,12 @@ async function run() {
                 post.querySelector("a.feed-post-link")?.href ||
                 post.querySelector("a")?.href ||
                 null;
-
             if(!link) return;
 
             const match = link.match(/\/noticia\/(\d{4}\/\d{2}\/\d{2})\//);
-
             if(!match) return;
 
             const dataPublicacao = match[1];
-
             if(dataPublicacao !== dataHoje) return;
 
             const titulo = post.querySelector(".feed-post-body-title")?.innerText.trim() || null;
@@ -63,11 +59,11 @@ async function run() {
 
     for(const noticia of noticias) {
         try {
-            await inserir(
+            const res = await inserir(
                 noticia.titulo,
                 noticia.paragrafo
             );
-            console.log(`Notícia: ${noticia.titulo}, salva no banco!`);
+            console.log(res);
         } catch(error) {
             console.log("Erro ao inserir notícias no banco: ", error);
         }
