@@ -13,7 +13,7 @@ export async function conectar() {
 }
 
 // função de criação de tabela no banco
-export async function init() {
+export async function criar() {
     const db = await conectar();
 
     await db.exec(`
@@ -28,7 +28,7 @@ export async function init() {
 }
 
 // função de inserir dados
-export async function inserir(titulo, paragrafo) {
+export async function inserir(titulo, paragrafo, data) {
     const db = await conectar();
 
     await db.run(
@@ -38,3 +38,17 @@ export async function inserir(titulo, paragrafo) {
 
     await db.close();
 }
+
+// Função de comparar se já existe notícia em banco
+// export async function comparar(titulo) {
+//     const db = await conectar();
+
+//     const comparar = await db.run(
+//         "SELECT titulo FROM pagina WHERE titulo LIKE ?",
+//         titulo
+//     );
+
+//     if(comparar != null) return(comparar);
+
+//     await db.close();
+// }
