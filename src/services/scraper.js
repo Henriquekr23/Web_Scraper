@@ -56,7 +56,7 @@ export async function scraper() {
         return listaNoticias;
     }, dataHoje);
 
-    inserirDados(listaNoticias);
+    inserirDados(noticias);
 
     await browser.close();
 }

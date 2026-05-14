@@ -1,10 +1,8 @@
 import { scraper } from "./scraper.js"
 import { inserir } from "../database/repository.js"
 
-const listaNoticias = scraper();
-
-export async function inserirDados(listaNoticias) {
-    for(const noticia of listaNoticias) {
+export async function inserirDados(noticias) {
+    for(const noticia of noticias) {
         try {
             const res = await inserir(
                 noticia.titulo,

@@ -1,4 +1,5 @@
 # Web Scraper com Bun
+# Como rodar
 ## 1. Instalar o Bun
 ```bash
 curl -fsSL https://bun.com/install | bash
@@ -18,5 +19,5 @@ bun install
 
 ## 4. Executar o scraper
 ```bash
-bun run scraper.js
+bun run app.js
 ```
