@@ -1,7 +1,8 @@
 import puppeteer from "puppeteer";
-import { inserir, criar, comparar } from "./db.js";
+import { criar } from "../database/migrations";
+import { inserirDados } from "./parser";
 
-async function run() {
+export async function scraper() {
     await criar();
 
     const browser = await puppeteer.launch({
@@ -55,21 +56,7 @@ async function run() {
         return listaNoticias;
     }, dataHoje);
 
-    console.log(`Encontrados ${noticias.length} notícias hoje.`);
+    inserirDados(listaNoticias);
 
-    for(const noticia of noticias) {
-        try {
-            const res = await inserir(
-                noticia.titulo,
-                noticia.paragrafo
-            );
-            console.log(res);
-        } catch(error) {
-            console.log("Erro ao inserir notícias no banco: ", error);
-        }
-    }
-    
     await browser.close();
 }
-
-run();
