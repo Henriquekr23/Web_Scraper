@@ -1,3 +1,4 @@
-import { scraper } from "./src/services/scraper";
+import "./src/server";
+import { criar } from "./src/database/criarDataBase";
 
-scraper();
+await criar();

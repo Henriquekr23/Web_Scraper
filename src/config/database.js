@@ -5,12 +5,24 @@ import path from "path";
 
 dotenv.config();
 
-// função de conexão com o banco
+const DB_PATH = process.env.DB_PATH || "noticias.db";
+
+let db = null;
+
 export async function conectar() {
-    const db = await open({
-        filename: process.env.DB_PATH || path.resolve("data/noticias.db"),
+    if (db) return db;
+
+    db = await open({
+        filename: path.resolve(DB_PATH),
         driver: sqlite3.Database
     });
 
     return db;
-};
+}
+
+export async function desconectar() {
+    if (db) {
+        await db.close();
+        db = null;
+    }
+}

@@ -1,32 +1,20 @@
 import puppeteer from "puppeteer";
-import { criar } from "../database/migrations";
-import { inserirDados } from "./parser";
+import { dataHoje } from "./obterService";
 
-export async function scraper() {
-    await criar();
-
+export async function scraper(termo) {
     const browser = await puppeteer.launch({
         headless: true //true para rodar sem abrir o navegador
     });
 
     const page = await browser.newPage();
-
-    // acessa a página de teste do wikipedia
-    await page.goto("https://g1.globo.com/tecnologia/", {
+    await page.goto(`https://g1.globo.com/${termo}` , {
         waitUntil: "domcontentloaded",
     });
 
-    // Data de hoje no formato YYYY/MM/DD
+    const data = dataHoje();
+    console.log(data, `https://g1.globo.com/${termo}`);
 
-    const hoje = new Date();
-    const ano = hoje.getFullYear();
-    const mes = String(hoje.getMonth() + 1).padStart(2, "0");
-    const dia = String(hoje.getDate() - 1).padStart(2, "0");
-
-    const dataHoje = `${ano}/${mes}/${dia}`;
-    console.log(dataHoje);
-
-    const noticias = await page.evaluate((dataHoje) => {
+    const noticias = await page.evaluate((data) => {
         const posts = document.querySelectorAll(".feed-post");
         const listaNoticias = [];
 
@@ -41,7 +29,7 @@ export async function scraper() {
             if(!match) return;
 
             const dataPublicacao = match[1];
-            if(dataPublicacao !== dataHoje) return;
+            if(dataPublicacao !== data) return;
 
             const titulo = post.querySelector(".feed-post-body-title")?.innerText.trim() || null;
             const paragrafo = post.querySelector(".feed-post-body-resumo")?.innerText.trim() || null;
@@ -49,14 +37,14 @@ export async function scraper() {
             listaNoticias.push({
                 titulo,
                 paragrafo,
-                data: dataHoje
+                termo,
+                data: data
             });
         });
 
         return listaNoticias;
-    }, dataHoje);
-
-    inserirDados(noticias);
+    }, data);
 
     await browser.close();
+    return noticias;
 }

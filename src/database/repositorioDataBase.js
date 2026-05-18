@@ -1,0 +1,66 @@
+import { conectar } from "../config/database.js";
+
+// função de inserir dados
+export async function inserir(titulo, paragrafo, termo) {
+    const db = await conectar();
+    const naoExiste = await comparar(titulo);
+
+    try {
+        if(!naoExiste) return `\nNotícia "${titulo}" já existe no banco`;
+
+        await db.run(
+            "INSERT INTO pagina (titulo, paragrafo, termo) VALUES (?, ?, ?)",
+            titulo, paragrafo, termo
+        );
+
+        return `\nNotícia "${titulo}" inserida com sucesso`;
+    } catch (error) {
+        throw error;
+    }
+}
+
+// Função de comparar se já existe notícia em banco
+export async function comparar(titulo) {
+    const db = await conectar();
+
+    try {
+        const busca = await db.get(
+            "SELECT titulo FROM pagina WHERE titulo = ?",
+            titulo
+        );
+
+        return !busca;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function obterPorData(data) {
+    const db = await conectar();
+
+    try {
+        const busca = await db.all(
+            "SELECT titulo, paragrafo, termo FROM pagina WHERE data = ?",
+            data
+        );
+
+        return busca;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function obterPorTermo(data, termo) {
+    const db = await conectar();
+
+    try {
+        const busca = await db.all(
+            "SELECT titulo, paragrafo FROM pagina WHERE data = ? AND termo = ?",
+            data, termo
+        )
+
+        return busca;
+    } catch (error) {
+        throw error;
+    }
+}
