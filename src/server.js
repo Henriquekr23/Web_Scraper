@@ -1,5 +1,8 @@
-import { noticiaRoutes } from "./routes/noticiaRoutes";
+import { noticiaRoutes } from "./routes/noticiaRoutes.js";
 import { httpResponse } from "./utils/response.js";
+import { iniciarBot } from "./services/telegramBot.js";
+
+iniciarBot();
 
 const server = Bun.serve({
     port: 3000,

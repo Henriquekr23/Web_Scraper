@@ -34,7 +34,7 @@ export async function scraper(termo) {
             if(!match) return;
 
             const dataPublicacao = match[1];
-            if(dataPublicacao !== dataHoje) return;
+            // if(dataPublicacao !== dataHoje) return;
 
             const titulo = post.querySelector(".feed-post-body-title")?.innerText.trim() || null;
             const paragrafo = post.querySelector(".feed-post-body-resumo")?.innerText.trim() || null;
