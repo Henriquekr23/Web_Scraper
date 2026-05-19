@@ -1,7 +1,7 @@
 import { inserirNoticias } from "../services/inserirService.js";
-import { dataHoje } from "../services/obterService.js";
 import { httpResponse } from "../utils/response.js";
 import { scraper } from "../services/scraperService.js";
+import { dataHoje } from "../utils/date.js";
 
 export async function sincronizarNoticias(req, url) {
   try {

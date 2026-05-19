@@ -11,7 +11,7 @@ export async function criar() {
                 titulo TEXT NOT NULL,
                 paragrafo TEXT NOT NULL,
                 termo TEXT NOT NULL,
-                data DATE DEFAULT CURRENT_DATE
+                data DATE
             )
         `);
     } catch (error) {

@@ -6,6 +6,13 @@ dotenv.config();
 
 const token = process.env.TELEGRAM_TOKEN;
 
+const hoje = new Date();
+const ano = hoje.getFullYear();
+const mes = String(hoje.getMonth() + 1).padStart(2, "0");
+const dia = String(hoje.getDate()).padStart(2, "0");
+
+const dataHoje = `${ano}/${mes}/${dia}`;
+
 export function iniciarBot() {
     if (!token) {
         console.error("[BOT] Token do Telegram não encontrado no .env");
@@ -23,7 +30,7 @@ export function iniciarBot() {
         bot.sendMessage(chatId, "Buscando as notícias mais recentes... 🔍");
 
         try {
-            const noticias = await obterNoticiasData();
+            const noticias = await obterNoticiasData(dataHoje);
 
             if (!noticias || noticias.length === 0) {
                 bot.sendMessage(chatId, "Não encontrei nenhuma notícia no banco para a data configurada. 😢");

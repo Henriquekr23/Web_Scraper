@@ -1,7 +1,7 @@
 import { conectar } from "../config/database.js";
 
 // função de inserir dados
-export async function inserir(titulo, paragrafo, termo) {
+export async function inserir(titulo, paragrafo, termo, data) {
     const db = await conectar();
     const naoExiste = await comparar(titulo);
 
@@ -9,8 +9,8 @@ export async function inserir(titulo, paragrafo, termo) {
         if(!naoExiste) return `\nNotícia "${titulo}" já existe no banco`;
 
         await db.run(
-            "INSERT INTO pagina (titulo, paragrafo, termo) VALUES (?, ?, ?)",
-            titulo, paragrafo, termo
+            "INSERT INTO pagina (titulo, paragrafo, termo, data) VALUES (?, ?, ?, ?)",
+            titulo, paragrafo, termo, data
         );
 
         return `\nNotícia "${titulo}" inserida com sucesso`;
@@ -50,13 +50,28 @@ export async function obterPorData(data) {
     }
 }
 
-export async function obterPorTermo(data, termo) {
+export async function obterPorTermo(termo) {
     const db = await conectar();
 
     try {
         const busca = await db.all(
-            "SELECT titulo, paragrafo FROM pagina WHERE data = ? AND termo = ?",
-            data, termo
+            "SELECT titulo, paragrafo FROM pagina WHERE termo = ?",
+            termo
+        );
+
+        return busca;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function obterPorTermoData(termo, data) {
+    const db = await conectar();
+
+    try {
+        const busca = await db.all(
+            "SELECT titulo, paragrafo FROM pagina WHERE termo = ? AND data = ?",
+            termo, data
         );
 
         return busca;

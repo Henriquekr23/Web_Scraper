@@ -1,4 +1,5 @@
 import puppeteer from "puppeteer";
+import { dataHoje } from "../utils/date";
 
 export async function scraper(termo) {
     const browser = await puppeteer.launch({
@@ -42,7 +43,7 @@ export async function scraper(termo) {
             listaNoticias.push({
                 titulo,
                 paragrafo,
-                data: dataHoje,
+                data: dataPublicacao,
                 termo
             });
         });

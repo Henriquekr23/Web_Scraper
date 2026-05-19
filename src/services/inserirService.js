@@ -6,7 +6,8 @@ export async function inserirNoticias(noticias) {
             const res = await inserir(
                 noticia.titulo,
                 noticia.paragrafo,
-                noticia.termo
+                noticia.termo,
+                noticia.data
             );
             console.log(res);
         } catch(error) {
