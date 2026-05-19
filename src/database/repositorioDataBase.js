@@ -57,7 +57,7 @@ export async function obterPorTermo(data, termo) {
         const busca = await db.all(
             "SELECT titulo, paragrafo FROM pagina WHERE data = ? AND termo = ?",
             data, termo
-        )
+        );
 
         return busca;
     } catch (error) {

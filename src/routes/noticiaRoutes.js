@@ -1,16 +1,14 @@
-import { buscarNoticias } from "../controllers/buscarNoticias";
-import { sincronizarNoticias } from "../controllers/sincronizarNoticias"
+import { buscarNoticiasData } from "../controllers/buscarNoticias.js";
+import { sincronizarNoticias } from "../controllers/sincronizarNoticias.js";
 
 export async function noticiaRoutes(req, url) {
     if(url.pathname === "/noticias/obterdata" && req.method === "GET") {
-        return await buscarNoticias(req, url);
+        return await buscarNoticiasData(req, url);
     }
 
     if(url.pathname === "/noticias/sincronizar" && req.method === "GET") {
         return await sincronizarNoticias(req, url);
     }
-
-    if(url.pathname === "/noticias/obtertermo")
 
     return null;
 }

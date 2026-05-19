@@ -1,12 +1,12 @@
-import { obter } from "../database/repositorioDataBase";
+import { obterPorData, obterPorTermo } from "../database/repositorioDataBase.js";
 
 export async function dataHoje() {
     const hoje = new Date();
     const ano = hoje.getFullYear();
     const mes = String(hoje.getMonth() + 1).padStart(2, "0");
-    const dia = String(hoje.getDate()).padStart(2, "0");
+    const dia = String(hoje.getDate() - 1).padStart(2, "0");
 
-    const dataHoje = `${ano}-${mes}-${dia}`;
+    const dataHoje = `${ano}/${mes}/${dia}`;
 
     return dataHoje;
 }
@@ -18,9 +18,9 @@ export async function obterNoticiasData() {
     return noticias;
 }
 
-export async function obterNoticiasTermo() {
+export async function obterNoticiasTermo(termo) {
     const data = await dataHoje();
-    const noticias = await obterPorData(data);
+    const noticias = await obterPorTermo(data, termo);
 
     return noticias;
 }

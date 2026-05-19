@@ -20,7 +20,7 @@ export async function buscarNoticiasData(req, url) {
 
 export async function buscarNoticiasTermo(params) {
   try {
-    const noticias = await obetrN();
+    const noticias = await obterNoticiasTermo(params);
     const data = await dataHoje();
 
     return httpResponse.success({

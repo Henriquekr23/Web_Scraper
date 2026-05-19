@@ -1,5 +1,4 @@
 import puppeteer from "puppeteer";
-import { dataHoje } from "./obterService";
 
 export async function scraper(termo) {
     const browser = await puppeteer.launch({
@@ -11,10 +10,16 @@ export async function scraper(termo) {
         waitUntil: "domcontentloaded",
     });
 
-    const data = dataHoje();
-    console.log(data, `https://g1.globo.com/${termo}`);
+    const hoje = new Date();
+    const ano = hoje.getFullYear();
+    const mes = String(hoje.getMonth() + 1).padStart(2, "0");
+    const dia = String(hoje.getDate()).padStart(2, "0");
 
-    const noticias = await page.evaluate((data) => {
+    const dataHoje = `${ano}/${mes}/${dia}`;
+
+    console.log(dataHoje, `https://g1.globo.com/${termo}`);
+
+    const noticias = await page.evaluate((dataHoje, termo) => {
         const posts = document.querySelectorAll(".feed-post");
         const listaNoticias = [];
 
@@ -29,7 +34,7 @@ export async function scraper(termo) {
             if(!match) return;
 
             const dataPublicacao = match[1];
-            if(dataPublicacao !== data) return;
+            if(dataPublicacao !== dataHoje) return;
 
             const titulo = post.querySelector(".feed-post-body-title")?.innerText.trim() || null;
             const paragrafo = post.querySelector(".feed-post-body-resumo")?.innerText.trim() || null;
@@ -37,13 +42,13 @@ export async function scraper(termo) {
             listaNoticias.push({
                 titulo,
                 paragrafo,
-                termo,
-                data: data
+                data: dataHoje,
+                termo
             });
         });
 
         return listaNoticias;
-    }, data);
+    }, dataHoje, termo);
 
     await browser.close();
     return noticias;

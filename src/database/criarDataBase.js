@@ -1,4 +1,3 @@
-import sql from "sqlite3";
 import { conectar } from "../config/database.js"
 
 // função de criação de tabela no banco
