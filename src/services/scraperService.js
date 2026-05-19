@@ -2,7 +2,7 @@ import puppeteer from "puppeteer";
 
 export async function scraper(termo) {
     const browser = await puppeteer.launch({
-        headless: true //true para rodar sem abrir o navegador
+        headless: true 
     });
 
     const page = await browser.newPage();

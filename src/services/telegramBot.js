@@ -11,8 +11,7 @@ export function iniciarBot() {
         console.error("[BOT] Token do Telegram não encontrado no .env");
         return;
     }
-
-    // Cria o bot ativando o "polling" 
+    
     const bot = new TelegramBot(token, { polling: true });
 
     console.log("[BOT] Bot do Telegram iniciado com sucesso!");
