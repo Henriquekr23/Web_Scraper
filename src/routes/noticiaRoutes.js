@@ -14,7 +14,7 @@ export async function noticiaRoutes(req, url) {
         return await buscarNoticiasTermoData(req, url);
     }
 
-    if(url.pathname === "/noticias/sincronizar" && req.method === "GET") {
+    if(url.pathname === "/noticias/sincronizar" && req.method === "POST") {
         return await sincronizarNoticias(req, url);
     }
 

@@ -1,9 +1,8 @@
 import puppeteer from "puppeteer";
-import { dataHoje } from "../utils/date";
 
-export async function scraper(termo) {
+export async function scraper(termo, data) {
     const browser = await puppeteer.launch({
-        headless: true 
+        headless: true
     });
 
     const page = await browser.newPage();
@@ -11,20 +10,13 @@ export async function scraper(termo) {
         waitUntil: "domcontentloaded",
     });
 
-    const hoje = new Date();
-    const ano = hoje.getFullYear();
-    const mes = String(hoje.getMonth() + 1).padStart(2, "0");
-    const dia = String(hoje.getDate()).padStart(2, "0");
+    console.log(`Scrapeando ${termo} para data: ${data}`);
 
-    const dataHoje = `${ano}/${mes}/${dia}`;
-
-    console.log(dataHoje, `https://g1.globo.com/${termo}`);
-
-    const noticias = await page.evaluate((dataHoje, termo) => {
+    const noticias = await page.evaluate((data, termo) => {
         const posts = document.querySelectorAll(".feed-post");
         const listaNoticias = [];
 
-        posts.forEach((post) => { 
+        posts.forEach((post) => {
             const link =
                 post.querySelector("a.feed-post-link")?.href ||
                 post.querySelector("a")?.href ||
@@ -35,7 +27,7 @@ export async function scraper(termo) {
             if(!match) return;
 
             const dataPublicacao = match[1];
-            // if(dataPublicacao !== dataHoje) return;
+            if(dataPublicacao !== data) return;
 
             const titulo = post.querySelector(".feed-post-body-title")?.innerText.trim() || null;
             const paragrafo = post.querySelector(".feed-post-body-resumo")?.innerText.trim() || null;
@@ -49,7 +41,7 @@ export async function scraper(termo) {
         });
 
         return listaNoticias;
-    }, dataHoje, termo);
+    }, data, termo);
 
     await browser.close();
     return noticias;
