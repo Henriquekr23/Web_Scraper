@@ -1,5 +1,21 @@
 import { conectar } from "../config/database.js";
 
+// Função de comparar se já existe notícia em banco
+const comparar = async (titulo) => {
+    const db = await conectar();
+
+    try {
+        const busca = await db.get(
+            "SELECT titulo FROM pagina WHERE titulo = ?",
+            titulo
+        );
+
+        return !busca;
+    } catch (error) {
+        throw error;
+    }
+};
+
 // função de inserir dados
 export async function inserir(titulo, paragrafo, termo, data) {
     const db = await conectar();
@@ -14,22 +30,6 @@ export async function inserir(titulo, paragrafo, termo, data) {
         );
 
         return `\nNotícia "${titulo}" inserida com sucesso`;
-    } catch (error) {
-        throw error;
-    }
-}
-
-// Função de comparar se já existe notícia em banco
-export async function comparar(titulo) {
-    const db = await conectar();
-
-    try {
-        const busca = await db.get(
-            "SELECT titulo FROM pagina WHERE titulo = ?",
-            titulo
-        );
-
-        return !busca;
     } catch (error) {
         throw error;
     }

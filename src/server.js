@@ -25,4 +25,4 @@ const server = Bun.serve({
     }
 });
 
-console.log(`Servidor rodando porta ${server.port}`);
+console.log(`[API] Servidor rodando porta ${server.port}`);
