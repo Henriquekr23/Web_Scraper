@@ -1,5 +1,6 @@
-import { buscarNoticiasData } from "../controllers/buscarNoticias.js";
+import { buscarNoticiasData, buscarNoticiasTermo, buscarNoticiasTermoData } from "../controllers/buscarNoticias.js";
 import { sincronizarNoticias } from "../controllers/sincronizarNoticias.js";
+import { resumir } from "../controllers/resumirNoticias.js";
 
 export async function noticiaRoutes(req, url) {
     if(url.pathname === "/noticias/obterdata" && req.method === "POST") {
@@ -16,6 +17,10 @@ export async function noticiaRoutes(req, url) {
 
     if(url.pathname === "/noticias/sincronizar" && req.method === "POST") {
         return await sincronizarNoticias(req, url);
+    }
+
+    if(url.pathname === "/noticias/resumir" && req.method === "GET") {
+        return await resumir(req, url);
     }
 
     return null;

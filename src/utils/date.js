@@ -1,10 +1,8 @@
-export async function dataHoje() {
+export async function obterDataScraper() {
     const hoje = new Date();
     const ano = hoje.getFullYear();
     const mes = String(hoje.getMonth() + 1).padStart(2, "0");
-    const dia = String(hoje.getDate()).padStart(2, "0");
+    const dia = String(hoje.getDate() - 1).padStart(2, "0");
 
-    const dataHoje = `${ano}-${mes}-${dia}`;
-
-    return dataHoje;
-}
+    return `${ano}/${mes}/${dia}`;
+};

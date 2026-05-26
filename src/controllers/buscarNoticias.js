@@ -1,5 +1,5 @@
-import { obterNoticiasData } from "../services/obterService.js";
-import { dataHoje } from "../utils/date.js";
+import { obterNoticiasData, obterNoticiasTermo, obterNoticiasTermoData } from "../services/obterService.js";
+import { obterDataScraper } from "../utils/date.js";
 import { httpResponse } from "../utils/response.js";
 
 export async function buscarNoticiasData(req, url) {
@@ -35,7 +35,7 @@ export async function buscarNoticiasTermo(req, url) {
     }
 
     const noticias = await obterNoticiasTermo(termo);
-    const data = await dataHoje();
+    const data = await obterDataScraper();
 
     return httpResponse.success({
       sucesso: true,

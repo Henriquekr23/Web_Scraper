@@ -1,5 +1,5 @@
-import { obterPorData, obterPorTermo } from "../database/repositorioDataBase.js";
-import { dataHoje } from "../utils/date.js";
+import { obterPorData, obterPorTermo, obterPorTermoData } from "../database/repositorioDataBase.js";
+import { obterDataScraper } from "../utils/date.js";
 
 export async function obterNoticiasData(data) {
     const noticias = await obterPorData(data);
@@ -8,7 +8,7 @@ export async function obterNoticiasData(data) {
 }
 
 export async function obterNoticiasTermo(termo) {
-    const data = await dataHoje();
+    const data = await obterDataScraper();
     const noticias = await obterPorTermo(data, termo);
 
     return noticias;

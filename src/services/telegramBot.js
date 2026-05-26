@@ -1,16 +1,12 @@
 import TelegramBot from "node-telegram-bot-api";
 import dotenv from "dotenv";
+import { obterDataScraper } from "../utils/date";
 
 dotenv.config();
 
 const token = process.env.TELEGRAM_TOKEN;
 
-const hoje = new Date();
-const ano = hoje.getFullYear();
-const mes = String(hoje.getMonth() + 1).padStart(2, "0");
-const dia = String(hoje.getDate() - 1).padStart(2, "0");
-
-const dataHoje = `${ano}/${mes}/${dia}`;
+const dataHoje = obterDataScraper();
 
 export function iniciarBot() {
     if (!token) {
@@ -21,6 +17,28 @@ export function iniciarBot() {
     const bot = new TelegramBot(token, { polling: true });
 
     console.log("[BOT] Bot do Telegram iniciado com sucesso!");
+
+    // Escuta o comando /resumo
+    bot.onText(/\/resumo/, async (msg) => {
+        const chatId = msg.chat.id;
+
+        bot.sendMessage(chatId, "⏳ Resumo das notícias está sendo processado, aguarde...");
+
+        try {
+            const response = await fetch("http://localhost:3000/noticias/resumir", {
+                method: "GET",
+                headers: { "Content-Type": "application/json" }
+            });
+
+            const dataResponse = await response.json();
+            const resumo = dataResponse.resumo;
+
+            bot.sendMessage(chatId, resumo, { parse_mode: 'Markdown' });
+        } catch(error) {
+            console.error("[BOT] Erro ao resumir notícias:", error);
+            bot.sendMessage(chatId, "Ocorreu um erro ao resumir as notícias no sistema.");
+        }
+    });
 
     // Escuta o comando /noticias
     bot.onText(/\/noticias/, async (msg) => {

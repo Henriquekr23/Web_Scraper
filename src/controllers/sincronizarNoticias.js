@@ -2,6 +2,7 @@ import { inserirNoticias } from "../services/inserirService.js";
 import { httpResponse } from "../utils/response.js";
 import { scraper } from "../services/scraperService.js";
 
+// PASSAR FUNCIONALIDADES PARA O UTILS
 const validarDataFormato = (data) => {
   const regex = /^\d{4}\/\d{2}\/\d{2}$/;
   if (!regex.test(data)) {
@@ -12,17 +13,8 @@ const validarDataFormato = (data) => {
   const dataObj = new Date(ano, mes - 1, dia);
 
   return dataObj.getFullYear() === ano &&
-         dataObj.getMonth() === mes - 1 &&
-         dataObj.getDate() === dia;
-};
-
-const obterDataHoje = () => {
-  const hoje = new Date();
-  const ano = hoje.getFullYear();
-  const mes = String(hoje.getMonth() + 1).padStart(2, "0");
-  const dia = String(hoje.getDate()).padStart(2, "0");
-
-  return `${ano}/${mes}/${dia}`;
+  dataObj.getMonth() === mes - 1 &&
+  dataObj.getDate() === dia;
 };
 
 export async function sincronizarNoticias(req, url) {
