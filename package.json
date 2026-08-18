@@ -1,4 +1,11 @@
 {
+  "name": "web-scraper-g1",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "bun app.js"
+  },
   "dependencies": {
     "dotenv": "^17.4.2",
     "node-telegram-bot-api": "^0.64.0",

@@ -1,17 +1,17 @@
 import { scraper } from "../services/scraperService";
 
-export function executarJobNoticias() {
+export async function executarJobNoticias() {
     const termo = "tecnologia";
-    
+
     try {
         console.log(`[JOB] Iniciando raspagem em ${new Date().toISOString()}`);
         const noticias = await scraper(termo);
-        console.log(`[JOB] Raspagem concluída. ${noticias.length} notícias encontradas.`);        
+        console.log(`[JOB] Raspagem concluída. ${noticias.length} notícias encontradas.`);
+        return noticias;
     } catch(error) {
         console.error("[JOB] Erro durante a raspagem: ", error);
-    };
-
-    return noticias;
+        return [];
+    }
 };
 
 export function iniciarJobNoticias() {
@@ -35,7 +35,7 @@ export function iniciarJobNoticias() {
         );
 
         setTimeout(async () => {
-            await executarRaspagemDiaria();
+            await executarJobNoticias();
             agendarProximaExecucao();
         }, delay);
     }

@@ -1,6 +1,7 @@
 import { inserirNoticias } from "../services/inserirService.js";
 import { httpResponse } from "../utils/response.js";
 import { scraper } from "../services/scraperService.js";
+import { obterDataScraper } from "../utils/date.js";
 
 // PASSAR FUNCIONALIDADES PARA O UTILS
 const validarDataFormato = (data) => {
@@ -27,7 +28,7 @@ export async function sincronizarNoticias(req, url) {
     }
 
     if(!data) {
-      data = obterDataHoje();
+      data = await obterDataScraper();
     } else if (!validarDataFormato(data)) {
       return httpResponse.error("Data inválida. Use o formato YYYY/MM/DD");
     }
